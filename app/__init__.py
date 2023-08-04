@@ -12,9 +12,12 @@ from .models.user import User
 
 # Import routers
 from .routers.user_router import user_router
+from .routers.index_router import index_router
 
 # Register routers
 app.register_blueprint(user_router)
+app.register_blueprint(index_router)
+
 
 
 @app.route('/list', methods=['GET'])
@@ -24,9 +27,5 @@ def index():
         routes.append(f'{rule.methods} {rule.rule}')
     return jsonify(routes)
 
-@app.route("/createdb", methods=["GET"])
-def createdb():
-    db.create_all()
-    return "Database created"
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Title {% endblock %} </title>
+    <style>
+         .header,.footer{height:35px;width:100%;margin:0 auto;background:#333;color:#f0f0f0;}
+         .header li{list-style:none;display:inline;width:300px;margin:0px 20px;}
+         .container{height:100px;width:100%;border:1px solid #f30;}
+         .footer{font-size:12px;text-align:center;height:20px;}
+   </style>
+</head>
+<body>
+   {% block header %}
+       <div class="header">   
+           <ul>
+               <li>首页</li>
+               <li>最近新闻</li>
+               <li>最新产品</li>
+               <li>人力需求</li>
+               <li>联系我们</li>
+           </ul>
+       </div>
+   {% endblock %}
+   {% block container %}       
+       <div class="container">
+        {% block content %}    
+        中部业务内容
+    
+   {% endblock %}
+    </div>
+   {% endblock %}
+   {% block footer %}          
+       <div class="footer">
+            Made by PeterCao,2020.联系方式：caoln2003@126.com
+       </div>
+   {% endblock %}
+</body>
+</html>
