@@ -25,12 +25,14 @@ from .routers.user_router import user_router
 from .routers.index_router import index_router
 from .routers.led_router import led_router
 from .routers.park_router import park_router
+from .routers.api_updateLed_router import api_updateLed_router
 
 # Register routers
 app.register_blueprint(user_router)
 app.register_blueprint(index_router)
 app.register_blueprint(led_router)
 app.register_blueprint(park_router)
+app.register_blueprint(api_updateLed_router)
 
 @app.route('/l', methods=['GET'])
 @app.route('/list', methods=['GET'])
