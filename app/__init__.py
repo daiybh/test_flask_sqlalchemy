@@ -3,9 +3,16 @@ from flask_sqlalchemy import SQLAlchemy
 from .config import Config
 from flask import jsonify
 
+import os
+ 
+
+
+
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+
+
 
 # Import models
 from .models.user import User
@@ -18,7 +25,11 @@ from .routers.index_router import index_router
 app.register_blueprint(user_router)
 app.register_blueprint(index_router)
 
-
+@app.route('/t',methods=['GET'])
+def a():
+    app.logger.info('info log')
+    app.logger.warning("warning log")
+    return 'heelo'
 
 @app.route('/list', methods=['GET'])
 def index():

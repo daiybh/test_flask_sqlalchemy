@@ -3,7 +3,7 @@ This is a Flask app demo.
 
 This demo use sqlite as database.
 
-on frist run this app , need create database ,call api "http://127.0.0.1:5000/createdb"
+on frist run this app , need create database ,call api "http://127.0.0.1:5000/index/createdb"
 
 then can enjoy it.
 
