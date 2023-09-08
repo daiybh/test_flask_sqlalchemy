@@ -34,6 +34,7 @@ app.register_blueprint(led_router)
 app.register_blueprint(park_router)
 app.register_blueprint(api_updateLed_router)
 
+@app.route('/', methods=['GET'])
 @app.route('/l', methods=['GET'])
 @app.route('/list', methods=['GET'])
 def index():
