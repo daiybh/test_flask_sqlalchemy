@@ -1,11 +1,14 @@
+from queue import Queue
 from flask import Blueprint, jsonify, request
 from app.models.user import User
 from app.models.park import Park
 from app.models.led import Led
-from app import db
+from app import db,app
+import requests
+  
 
 api_updateLed_router = Blueprint('api_updateLed_router', __name__,url_prefix='/api')
-@api_updateLed_router.route('/updates', methods=['GET'])
+@api_updateLed_router.route('/updates', methods=['GET','POST'])
 def get_users():
     
     json_template={
@@ -17,33 +20,51 @@ def get_users():
             "data": [
                 {
                     "F_id":1,
-                    "F_message":"car1 coming",
+                    "F_message":"川A12345 来了",
                     "F_color":1
                 },
                 {
                     "F_id":2,
-                    "F_message":"car2 coming",
+                    "F_message":"京A6789A 东门",
+                    "F_color":1
+                },
+                {
+                    "F_id":3,
+                    "F_message":"京Aww789 西南",
+                    "F_color":1
+                },
+                {
+                    "F_id":4,
+                    "F_message":"云BBBBBB 西南",
+                    "F_color":1
+                },
+                {
+                    "F_id":5,
+                    "F_message":"云C6TGHU 下线",
                     "F_color":1
                 }
             ]
         }
-    try:
-        rjson= request.json()
+    try:        
+        rjson= request.get_json()
         park_id=rjson['park_id']
-        led_id = rjson['led_id']
-    except:        
-        #return jsonify({'error':-1,"msg":"need json body"})
+        led_id = rjson['LED_id']
+    except Exception as ex:
+        print(ex)        
+        return jsonify({'error':-1,"msg":f"need json body {ex}"})
         park_id="10045928"
         led_id="860302250008951"
-    result = db.session.query
-    (        Led.ledid,Led.park_id,Park.name,Park.pgmfilepath        ).filter
-    (        Led.ledid==led_id         ).filter
-    (        Park.park_id==park_id     ).filter
-    (        Park.park_id==Led.park_id ).all() 
+        rjson = json_template
+    result = db.session.query(
+                Led.ledid,Led.park_id,Park.name,Park.pgmfilepath).filter(  
+                          Led.ledid==led_id         ).filter(   
+                                   Park.park_id==park_id     ).filter( 
+                                              Park.park_id==Led.park_id ).all() 
 
     if len(result)==0:        
         return jsonify({'error':-1,"msg":f"don't find parkid:{park_id},led_id:{led_id}"})
-    
-    #生成请求JSON
+    rjson['pgmfilepath'] = result[0][3]
+    app.globalVar.timerThread.activeTask(rjson)
+    return jsonify(rjson)
 
-    return jsonify([tuple(row) for row in result])
+

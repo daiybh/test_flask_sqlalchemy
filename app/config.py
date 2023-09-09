@@ -10,7 +10,7 @@ class Config:
 
     SERVER_PORT = 18080
 
-    LED_SERVER_BASEURL = "http://nps.hyman.store:11007"
+    LED_SERVER_BASEURL = "http://t.hyman.store:11007"
     LED_SERVER_NEIMA_URL = LED_SERVER_BASEURL+"/neima?key="
     LED_SERVER_EMPTY_PLOT = LED_SERVER_BASEURL+"/empty_plot"
 

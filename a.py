@@ -1,5 +1,8 @@
 import requests
 
+for a in range(0,11):
+    b =int((a+3)/4)
+    print(a,b)
 data={"name":"xyz","email":"aa@aa.com"} 
 
 
