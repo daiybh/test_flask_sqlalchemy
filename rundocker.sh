@@ -1,0 +1,1 @@
+ docker container run -it --rm --name wptest -p 1238:18080 --volume "$PWD/":/app python /bin/bash -c "chmod +x /app/docker_run.sh;/app/docker_run.sh"

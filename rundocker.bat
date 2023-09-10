@@ -1,0 +1,1 @@
+docker container run -it --rm --name wptest -p 1238:18080 --volume C:/Users/yg/Desktop/test_flask_sqlalchemy/:/app python /bin/bash
