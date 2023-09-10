@@ -11,13 +11,11 @@ import time
 # 定时从任务队列里面取出任务 并执行
 # 任务里面包含一个 子任务队列，并记录当前执行到哪个子任务
 class TimerThread(threading.Thread):
-    def __init__(self) :
+    def __init__(self,logger) :
         threading.Thread.__init__(self)
-
         self.taskQueue = Queue(maxsize=5)    
-        self.logger=  logging.basicConfig(filename=f'timerr.log',
-                    level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
-        #self.logger.debug("aaadddddddddddddddddd")
+        self.logger=logger  
+        self.logger.debug("TimerThread init")
 
     def activeTask(self,task):
         self.taskQueue.put(task)

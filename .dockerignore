@@ -1,0 +1,6 @@
+__pycache__/
+instance/
+.vscode/
+logs/
+upload/
+timerr.log
