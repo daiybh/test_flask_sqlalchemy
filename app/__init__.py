@@ -1,3 +1,4 @@
+import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -11,15 +12,29 @@ import os
  
 
 
-
 app = Flask(__name__)
 app.config.from_object(Config)
+
 db = SQLAlchemy(app)
 
-app.globalVar=GlobalVar()
-if app.globalVar.timerThread==None:
-    app.globalVar.timerThread = TimerThread()
-    app.globalVar.timerThread.start()
+def init(curAppPath):
+    app.config["LOGGER_PATH"]=f"{curAppPath}/logs/"
+    app.config["UPLOAD_FOLDER"]=f"{curAppPath}/upload/"
+        
+
+    if not os.path.exists(app.config["UPLOAD_FOLDER"]):
+        os.makedirs(app.config["UPLOAD_FOLDER"])  
+
+    if not os.path.exists(app.config["LOGGER_PATH"]):
+        os.makedirs(app.config["LOGGER_PATH"]) 
+
+    logging.basicConfig(filename=f'{app.config["LOGGER_PATH"]}flask.log',
+                        level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+    app.globalVar=GlobalVar()
+    if app.globalVar.timerThread==None:
+        app.globalVar.timerThread = TimerThread(app.logger)
+        app.globalVar.timerThread.start()
 
 # Import models
 from .models.user import User
