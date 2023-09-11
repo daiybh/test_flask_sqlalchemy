@@ -6,9 +6,9 @@
  #mkdir ${appLogsPath}
  #mkdir ${appUploadPath}
  ln -s ${appBasePath} $PWD
- 
+
 
  docker container run -d \
         --name led_flask -p 1238:18080 \
         --volume "$PWD/":"/home/admin/myapps/ledpython/"  \
-        python /bin/bash -c "chmod +x /home/admin/myapps/ledpython/docker_run.sh;/home/admin/myapps/ledpython/docker_run.sh"
+        python /bin/bash -c "cd /home/admin/myapps/ledpython/;chmod +x docker_run.sh;./docker_run.sh"
