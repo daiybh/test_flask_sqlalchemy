@@ -5,7 +5,7 @@
  #mkdir ${appBasePath}
  #mkdir ${appLogsPath}
  #mkdir ${appUploadPath}
- ln -s ${appBasePath} $PWD
+ ln -s $PWD ${appBasePath} 
 
 
  docker container run -d \
