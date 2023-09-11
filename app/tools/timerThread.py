@@ -40,6 +40,7 @@ class TimerThread(threading.Thread):
             showText+=f"{a['F_message']},"
         showText=showText[:-1]
         print(showText)
+        self.logger.debug(f"showText:{showText}")
         #生成请求JSON
         dat={
                 "ledids":runningTask['LED_id'],
@@ -50,7 +51,8 @@ class TimerThread(threading.Thread):
             }
         
         response = requests.get(Config.LED_SERVER_EMPTY_PLOT,params=dat)
-        last_update_response = response.text   
+        last_update_response = response.text  
+        self.logger.debug(f"last_update_response:{last_update_response}") 
         print(last_update_response)     
 
         
