@@ -8,4 +8,4 @@ class GlobalVar:
     last_updateLED_time:int =0
     last_update_time=0
     current_empty_plot =0
-    timerThread=None
+    ledTaskThread=None

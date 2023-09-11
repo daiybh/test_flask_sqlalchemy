@@ -7,10 +7,12 @@ import requests
 from app.config import Config
 import time
 
+from app.tools.LedTask.lsprj_parser import genrate_image
+
 #启动一个定时线程
 # 定时从任务队列里面取出任务 并执行
 # 任务里面包含一个 子任务队列，并记录当前执行到哪个子任务
-class TimerThread(threading.Thread):
+class LedTaskThread(threading.Thread):
     def __init__(self,logger,activetask_everyseconds=20):
         threading.Thread.__init__(self)
         self.taskQueue = Queue(maxsize=5)    
@@ -22,35 +24,21 @@ class TimerThread(threading.Thread):
         self.taskQueue.put(task)
 
     def handle(self,runningTask):        
-        a = len(runningTask['data'])
-        pages=int((a+3)/4)
-        curPos = runningTask['loop'] %pages*4
-        print(f"pages:{pages} curpos:{curPos} task:{a} loop:{runningTask['loop']}")
-        runningTask['loop']+=1
-        showList=[]
-        for i in range(curPos,min(curPos+4,a)):            
-            showList.append(runningTask['data'][i])
-        
+        pages=len(runningTask['pngPath'])
 
-        for i in range(len(showList) ,4):
-            showList.append( {'F_id': 2, 'F_message': ' ', 'F_color': 1})
-        #print(showList) 
-        showText=""
-        for a in showList:
-            showText+=f"{a['F_message']},"
-        showText=showText[:-1]
-        print(showText)
-        self.logger.debug(f"showText:{showText}")
+        curPage = runningTask['loop'] %pages
+
+        print(f"curpos:{curPage}/{pages} loop:{runningTask['loop']}")
+        runningTask['loop']+=1
         #生成请求JSON
         dat={
-                "ledids":runningTask['LED_id'],
-                "empty_plot":showText,
-                "pgmfilepath":"/home/admin/cheyun/upload/123.lsprj",
-                "park_id":runningTask['park_id']
-                #"fontcolor":1
+                "ledids":runningTask['LED_id'],                
+                "pgmfilepath":runningTask['pgmfilepath'],
+                "park_id":runningTask['park_id'],
+                "imagepath":runningTask['pngPath'][curPage]
             }
         
-        response = requests.get(Config.LED_SERVER_EMPTY_PLOT,params=dat)
+        response = requests.get(Config.LED_SERVER_UPDATE_WITH_IMAGE,params=dat)
         last_update_response = response.text  
         self.logger.debug(f"last_update_response:{last_update_response}") 
         print(last_update_response)     
@@ -70,6 +58,11 @@ class TimerThread(threading.Thread):
                 print("got new task",newtask)
                 newtask['loop']=0
                 key = f"{newtask['park_id']}_{newtask['LED_id']}"
+                
+                pngPath=genrate_image(newtask['pgmfilepath'],newtask["data"],f'{Config.UPLOAD_FOLDER}/image_{key}')
+                
+                newtask['pngPath']=pngPath
+
                 runningTaskDict[key]=newtask
             except:
                 pass

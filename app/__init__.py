@@ -3,7 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from app.globalDebugVer import GlobalVar
-from app.tools.timerThread import TimerThread
+from app.tools.LedTask.ledTaskThread import LedTaskThread
 from .config import Config
 from flask import jsonify
 from flask_restful import Api,Resource
@@ -32,9 +32,9 @@ def init(curAppPath):
                         level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
     app.globalVar=GlobalVar()
-    if app.globalVar.timerThread==None:
-        app.globalVar.timerThread = TimerThread(app.logger)
-        app.globalVar.timerThread.start()
+    if app.globalVar.ledTaskThread==None:
+        app.globalVar.ledTaskThread = LedTaskThread(app.logger)
+        app.globalVar.ledTaskThread.start()
 
 # Import models
 from .models.user import User

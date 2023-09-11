@@ -4,7 +4,7 @@ from app.models.user import User
 from app.models.park import Park
 from app.models.led import Led
 from app import db,app
-import requests
+
   
 
 api_updateLed_router = Blueprint('api_updateLed_router', __name__,url_prefix='/api')
@@ -63,7 +63,8 @@ def get_users():
         return jsonify({'state':0,"msg":f"don't find parkid:{park_id},led_id:{led_id}"})
     
     rjson['pgmfilepath'] = result[0][3]
-    app.globalVar.timerThread.activeTask(rjson)    
+
+    app.globalVar.ledTaskThread.activeTask(rjson)    
     return jsonify({'state':1,"msg":"success"})
 
 
