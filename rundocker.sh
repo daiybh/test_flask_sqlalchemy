@@ -2,13 +2,13 @@
  appBasePath=/home/admin/myapps/ledpython/
  appLogsPath=${appBasePath}/logs/
  appUploadPath=${appBasePath}/upload/
- mkdir ${appBasePath}
- mkdir ${appLogsPath}
- mkdir ${appUploadPath}
+ #mkdir ${appBasePath}
+ #mkdir ${appLogsPath}
+ #mkdir ${appUploadPath}
+ ln -s ${appBasePath} $PWD
  
+
  docker container run -d \
         --name led_flask -p 1238:18080 \
-        --volume "$PWD/":/app  \
-        --volume "${appLogsPath}/":/app/logs  \
-        --volume "${appUploadPath}/":/app/upload  \
-        python /bin/bash -c "chmod +x /app/docker_run.sh;/app/docker_run.sh"
+        --volume "$PWD/":"/home/admin/myapps/ledpython/"  \
+        python /bin/bash -c "chmod +x /home/admin/myapps/ledpython/docker_run.sh;/home/admin/myapps/ledpython/docker_run.sh"
