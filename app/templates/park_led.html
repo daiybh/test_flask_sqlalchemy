@@ -103,7 +103,10 @@
             <div >
                 <h1>LEDs</h1>
                 <div id="showLeds">
-                    {{LEDS_DATA}}
+                    {% for item in LEDS_DATA %}
+                    <li>{{ item: ledid }}</li>
+
+                    {% endfor %}
                 </div>
             </div>
         </section>
@@ -114,7 +117,10 @@
             <div>
                 <h1>Parks</h1>
                 <div id="showparks">
-                    {{PARKS_DATA}}
+                    {% for item in PARKS_DATA %}
+                    <li>{{ item: park_id }}</li>
+
+                    {% endfor %}
                 </div>
             </div>
         </section>
