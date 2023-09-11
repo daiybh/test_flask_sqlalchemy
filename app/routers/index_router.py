@@ -24,7 +24,7 @@ def all():
     parks = Park.query.all()
     parksJson= ([l.to_dict() for l in parks])
 
-    return render_template('park_led.html',PARKS_DATA=parksJson,LEDS_DATA=ledsJson)
+    return render_template('park_led.html',PARKS_DATA=parks,LEDS_DATA=ledsJson)
 
 @index_router.route('/product', methods=['GET'])
 def product():

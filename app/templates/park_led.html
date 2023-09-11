@@ -103,10 +103,19 @@
             <div >
                 <h1>LEDs</h1>
                 <div id="showLeds">
-                    {% for item in LEDS_DATA %}
-                    <li>{{ item: ledid }}</li>
-
-                    {% endfor %}
+                    <table>
+                        <tr>
+                            <th>ledid</th>
+                            <th>Park id</th>
+                        </tr>
+                        {% for item in LEDS_DATA %}
+                        <tr>
+                            <td>{{ item.ledid }} <button type="button" onclick="deleteLed({{ item.ledid }})">delete</button></td>
+                            <td> {{ item.park_id}}</td>
+                    
+                        </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
         </section>
@@ -117,10 +126,22 @@
             <div>
                 <h1>Parks</h1>
                 <div id="showparks">
-                    {% for item in PARKS_DATA %}
-                    <li>{{ item: park_id }}</li>
-
-                    {% endfor %}
+                    <table>
+                        <tr>
+                            <th>Park id</th>
+                            <th>park_name</th>
+                            <th>pgmfilepath</th>
+                        </tr>
+                        {% for item in PARKS_DATA %}
+                        <tr>
+                            <td>{{ item.park_id }} <button type="button" onclick="deletepark({{ item.park_id }})">delete</button></td>
+                            <td>{{ item.park_name }}</td>
+                            <td> {{ item.pgmfilepath}}</td>
+                    
+                        </tr>
+                        {% endfor %}
+                    </table>
+                   
                 </div>
             </div>
         </section>
