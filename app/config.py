@@ -18,3 +18,5 @@ class Config:
 
     LOGGER_PATH=f'{curAppPath}/logs/'
 
+    ACTIVETASK_EVERYSECONDS=20
+

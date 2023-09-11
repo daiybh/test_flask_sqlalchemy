@@ -11,18 +11,17 @@ import time
 # 定时从任务队列里面取出任务 并执行
 # 任务里面包含一个 子任务队列，并记录当前执行到哪个子任务
 class TimerThread(threading.Thread):
-    def __init__(self,logger) :
+    def __init__(self,logger,activetask_everyseconds=20):
         threading.Thread.__init__(self)
         self.taskQueue = Queue(maxsize=5)    
         self.logger=logger  
+        self.activetask_everyseconds= activetask_everyseconds
         self.logger.debug("TimerThread init")
 
     def activeTask(self,task):
         self.taskQueue.put(task)
 
     def handle(self,runningTask):        
-        #self.logger.error("aaaa")
-        #newtask['loop']=0
         a = len(runningTask['data'])
         pages=int((a+3)/4)
         curPos = runningTask['loop'] %pages*4
@@ -43,7 +42,7 @@ class TimerThread(threading.Thread):
         print(showText)
         #生成请求JSON
         dat={
-                "ledids":"860402316010496",
+                "ledids":runningTask['LED_id'],
                 "empty_plot":showText,
                 "pgmfilepath":"/home/admin/cheyun/upload/123.lsprj",
                 "park_id":runningTask['park_id']
@@ -62,7 +61,7 @@ class TimerThread(threading.Thread):
         while True:
             icount+=1
             try:
-                newtask = self.taskQueue.get(block=True,timeout=20)
+                newtask = self.taskQueue.get(block=True,timeout= self.activetask_everyseconds)
                 if newtask==None:
                     break
             #把 newtask 添加到dict 中去

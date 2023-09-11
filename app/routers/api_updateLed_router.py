@@ -9,14 +9,13 @@ import requests
 
 api_updateLed_router = Blueprint('api_updateLed_router', __name__,url_prefix='/api')
 @api_updateLed_router.route('/updates', methods=['GET','POST'])
-def get_users():
-    
+def get_users():    
     json_template={
             "service_name":"Receive_LED",
-            "park_id":"12345678",
+            "park_id":"10045928",
             "sign":"",
             "order_id":"10001",
-            "LED_id":"11112312135",
+            "LED_id":"860402316010496" ,
             "data": [
                 {
                     "F_id":1,
@@ -51,10 +50,9 @@ def get_users():
         led_id = rjson['LED_id']
     except Exception as ex:
         print(ex)        
-        return jsonify({'error':-1,"msg":f"need json body {ex}"})
-        park_id="10045928"
-        led_id="860302250008951"
+        return jsonify({'state':0,"msg":f"need json body {ex}\n{json_template}"})
         rjson = json_template
+
     result = db.session.query(
                 Led.ledid,Led.park_id,Park.name,Park.pgmfilepath).filter(  
                           Led.ledid==led_id         ).filter(   
@@ -62,9 +60,10 @@ def get_users():
                                               Park.park_id==Led.park_id ).all() 
 
     if len(result)==0:        
-        return jsonify({'error':-1,"msg":f"don't find parkid:{park_id},led_id:{led_id}"})
+        return jsonify({'state':0,"msg":f"don't find parkid:{park_id},led_id:{led_id}"})
+    
     rjson['pgmfilepath'] = result[0][3]
-    app.globalVar.timerThread.activeTask(rjson)
-    return jsonify(rjson)
+    app.globalVar.timerThread.activeTask(rjson)    
+    return jsonify({'state':1,"msg":"success"})
 
 
