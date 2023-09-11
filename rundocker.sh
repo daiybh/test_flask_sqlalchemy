@@ -1,5 +1,5 @@
  
- appBasePath=/home/admin/myapps/ledpython/
+ appBasePath=/home/admin/myapps/ledpython
  appLogsPath=${appBasePath}/logs/
  appUploadPath=${appBasePath}/upload/
  #mkdir ${appBasePath}
