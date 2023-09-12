@@ -105,15 +105,15 @@
             <div >
                 <h1>LEDs</h1>
                 <div id="showLeds">
-                    <table>
+                    <table  border="1">
                         <tr>
                             <th>ledid</th>
                             <th>Park id</th>
                         </tr>
                         {% for item in LEDS_DATA %}
                         <tr>
-                            <td>{{ item.ledid }} <button type="button" onclick="deleteLed({{ item.ledid }})">delete</button></td>
-                            <td> {{ item.park_id}}</td>
+                            <td>"{{ item.ledid }}"<button type="button" onclick="deleteLed({{ item.ledid }})">delete</button></td>
+                            <td>"{{ item.park_id}}"</td>
                     
                         </tr>
                         {% endfor %}
@@ -128,7 +128,7 @@
             <div>
                 <h1>Parks</h1>
                 <div id="showparks">
-                    <table>
+                    <table border="1">
                         <tr>
                             <th>Park id</th>
                             <th>park_name</th>
@@ -136,9 +136,9 @@
                         </tr>
                         {% for item in PARKS_DATA %}
                         <tr>
-                            <td>{{ item.park_id }} <button type="button" onclick="deletepark({{ item.park_id }})">delete</button></td>
+                            <td>"{{ item.park_id }}"<button type="button" onclick="deletepark({{ item.park_id }})">delete</button></td>
                             <td>{{ item.park_name }}</td>
-                            <td> {{ item.pgmfilepath}}</td>
+                            <td>{{ item.pgmfilepath}}</td>
                     
                         </tr>
                         {% endfor %}
