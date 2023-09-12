@@ -20,10 +20,15 @@ db = SQLAlchemy(app)
 def init(curAppPath):
     app.config["LOGGER_PATH"]=f"{curAppPath}/logs/"
     app.config["UPLOAD_FOLDER"]=f"{curAppPath}/upload/"
+    app.config["TASK_FOLDER"]=f"{curAppPath}/tasks/"
+    
         
 
     if not os.path.exists(app.config["UPLOAD_FOLDER"]):
         os.makedirs(app.config["UPLOAD_FOLDER"])  
+
+    if not os.path.exists(app.config["TASK_FOLDER"]):
+        os.makedirs(app.config["TASK_FOLDER"])  
 
     if not os.path.exists(app.config["LOGGER_PATH"]):
         os.makedirs(app.config["LOGGER_PATH"]) 
@@ -33,7 +38,7 @@ def init(curAppPath):
 
     app.globalVar=GlobalVar()
     if app.globalVar.ledTaskThread==None:
-        app.globalVar.ledTaskThread = LedTaskThread(app.logger)
+        app.globalVar.ledTaskThread = LedTaskThread(app.logger,app.config)
         app.globalVar.ledTaskThread.start()
 
 # Import models

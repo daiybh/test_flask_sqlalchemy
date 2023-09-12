@@ -28,12 +28,19 @@ def drawBackImage(json_data):
 
     image = Image.new("RGB", (ledWidth, ledHeight), (0, 0, 0))
     draw = ImageDraw.Draw(image)
-
+    print(ledWidth,ledHeight)
     for area in areas:
         areaLeft=int(area['@AreaRect_Left'])
         areaTop=int(area['@AreaRect_Top'])
-        areaRight=int(area['@AreaRect_Right'])-1
+        areaRight=int(area['@AreaRect_Right'])
+        if areaRight>= ledWidth:
+            areaRight = ledWidth-1
+
         areaBottom=int(area['@AreaRect_Bottom'])
+        if areaBottom>= ledHeight:
+            areaBottom = ledHeight-1
+
+        print(areaLeft,areaTop,areaRight,areaBottom)
 
         draw.rectangle((areaLeft, areaTop,areaRight, areaBottom),outline='red',width=1)
     

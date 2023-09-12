@@ -1,3 +1,4 @@
+import json
 from queue import Queue
 from flask import Blueprint, jsonify, request
 from app.models.user import User
@@ -63,6 +64,20 @@ def get_users():
         return jsonify({'state':0,"msg":f"don't find parkid:{park_id},led_id:{led_id}"})
     
     rjson['pgmfilepath'] = result[0][3]
+    #收到任务 
+    # 解析
+    # 把任务写入文件 目录：TASK_FOLDER
+    #   直接把json 写入 TASK_FOLDER
+    # 激活letaskThread  读一次 TASK_FOLDER
+    taskJson=app.config["TASK_FOLDER"]+f"task@{park_id}_{led_id}.json"
+    with open(taskJson,"w") as f:
+        json.dump(rjson,f,indent=4)
+
+    #letaskThread 
+    # 启动的时候 读一次 TASK_FOLDER
+    # 等待激活事件去 读 TASK_FOLDER
+    #  把 TASK_FOLDER 中的任务读入内存队列， 如果已经存在就覆盖
+    # 执行 内存队列中的任务
 
     app.globalVar.ledTaskThread.activeTask(rjson)    
     return jsonify({'state':1,"msg":"success"})
