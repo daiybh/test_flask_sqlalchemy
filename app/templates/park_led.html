@@ -80,6 +80,7 @@
                     <p>Park Name: <input type="text" name="park_name" /></p>
                     <p>Park id: <input type="text" name="park_id" /></p>
                     <p>pgm File: <input type="file" name="file" /></p>
+                    <p>背景图: <input type="file" name="backgroundImage" /></p>
                     <input type="text" name="actiontype" value="add" hidden>
                     <p><input type="submit" value="Add" /></p>
                 </form>
@@ -91,6 +92,7 @@
                 <form enctype="multipart/form-data" onsubmit="return setparkAction(this)" method="POST">
                     <p>Park id: <input type="text" name="park_id" /></p>
                     <p>pgm File: <input type="file" name="file" /></p>
+                    <p>背景图: <input type="file" name="backgroundImage" /></p>
                     <input type="text" name="actiontype" value="update" hidden>
                     <p><input type="submit" value="update" /></p>
                 </form>

@@ -63,6 +63,8 @@ class LedTaskThread(threading.Thread):
                 
                 newtask['pngPath']=pngPath
 
+                newtask['backGroundImage']=genrate_image(newtask['pgmfilepath'],f'{Config.UPLOAD_FOLDER}/backgournd_{key}.png')
+
                 runningTaskDict[key]=newtask
             except:
                 pass

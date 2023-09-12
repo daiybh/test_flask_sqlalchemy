@@ -15,20 +15,30 @@ def convert_file_to_json(file_path):
 
     return json_data
 
-import base64
-
-from rtfparse.parser import Rtf_Parser
-
-def parseRTF(base64EncodeText):
-    decoded_text = base64.b64decode(base64EncodeText)
-    with open('decoded_text.txt', 'wb') as f:
-        f.write(decoded_text)
-    rtf = Rtf_Parser(rtf_path='decoded_text.txt')
-    parsed_text = rtf.parse_file()
-    return parsed_text
 
 from PIL import Image, ImageDraw, ImageFont
 
+def drawBackImage(json_data):
+    ledJson= json_data["LEDS"]["LED"]
+
+    ledWidth=int(ledJson['@LedWidth'])
+    ledHeight=int(ledJson['@LedHeight'])
+
+    areas= ledJson['Program']['Area']
+
+    image = Image.new("RGB", (ledWidth, ledHeight), (0, 0, 0))
+    draw = ImageDraw.Draw(image)
+
+    for area in areas:
+        areaLeft=int(area['@AreaRect_Left'])
+        areaTop=int(area['@AreaRect_Top'])
+        areaRight=int(area['@AreaRect_Right'])-1
+        areaBottom=int(area['@AreaRect_Bottom'])
+
+        draw.rectangle((areaLeft, areaTop,areaRight, areaBottom),outline='red',width=1)
+    
+    return image
+        
 def drawJson(json_data,showText):    
     ledJson= json_data["LEDS"]["LED"]
 
@@ -97,9 +107,17 @@ def genrate_image(lsprj,showText,pngSavePathPrex):
         image_a.save(pngPath)
         result.append(pngPath)
     return result
+
+def generate_backImage(lsprj,pngSavePath):
+    a = convert_file_to_json(lsprj)
+    image_a = drawBackImage(a)
+    image_a.save(pngSavePath)
+    return pngSavePath
     
 
     
 
 if __name__=="__main__":
-    genrate_image("123.lsprj",["第一行 1235","456","789","abc","B123"])#,"B456","B789","Babc"])
+    #genrate_image("123.lsprj",["第一行 1235","456","789","abc","B123"])#,"B456","B789","Babc"])
+
+    generate_backImage("C:\\Users\\yg\\Desktop\\a\\123.lsprj","123.png")
