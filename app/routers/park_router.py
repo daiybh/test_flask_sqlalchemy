@@ -29,6 +29,7 @@ def create_park():
             return "no file"
         lsprjfile = os.path.join(app.config['UPLOAD_FOLDER'],
                                  f'{data["park_id"]}.lsprj')
+        app.logger.warning("create_park lsprjfile:{}".format(lsprjfile))
         file.save(lsprjfile)
 
     park = Park(name=data['park_name']

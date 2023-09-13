@@ -109,7 +109,6 @@ class LedTaskThread(threading.Thread):
                         break
                 self.loadTask()                
             except Exception as e:
-                print(f"except {e}")
                 pass
             #print(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }" )
             if len(self.runningTaskDict)==0:
