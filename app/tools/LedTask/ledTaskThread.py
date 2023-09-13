@@ -9,7 +9,7 @@ from app.config import Config
 import time
 import os
 import json
-from app.tools.LedTask.lsprj_parser import generate_backImage, genrate_image
+
 
 #启动一个定时线程
 # 定时从任务队列里面取出任务 并执行
@@ -87,7 +87,8 @@ class LedTaskThread(threading.Thread):
                     task_data['loop']=0
                     #生成背景图片
                     #                     
-                    task_data['backgroundImage']=generate_backImage(task_data['pgmfilepath'],f'{self.config["UPLOAD_FOLDER"]}/backgournd_{key}.png')
+                    task_data['backgroundImage']=self.config["BACKGROUND_IMG_PATH"]
+                    #generate_backImage(task_data['pgmfilepath'],f'{self.config["UPLOAD_FOLDER"]}/backgournd_{key}.jpg')
                     # 把task_data['data'] 分解成 group task 每个group 4个task
                     groupTask=[]
                     for i in range(0,len(task_data['data']),4):

@@ -21,7 +21,7 @@ def init(curAppPath):
     app.config["LOGGER_PATH"]=f"{curAppPath}/logs/"
     app.config["UPLOAD_FOLDER"]=f"{curAppPath}/upload/"
     app.config["TASK_FOLDER"]=f"{curAppPath}/tasks/"
-    
+    app.config["BACKGROUND_IMG_PATH"]=f'{curAppPath}/123.jpg'
         
 
     if not os.path.exists(app.config["UPLOAD_FOLDER"]):

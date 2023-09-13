@@ -19,5 +19,7 @@ class Config:
     LOGGER_PATH=f'{curAppPath}/logs/'
     TASK_FOLDER = f'{curAppPath}/tasks/'
 
+    BACKGROUND_IMG_PATH=f'{curAppPath}/123.jpg'
+
     ACTIVETASK_EVERYSECONDS=20
 
