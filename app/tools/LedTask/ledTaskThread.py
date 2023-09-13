@@ -42,7 +42,7 @@ class LedTaskThread(threading.Thread):
                 "ledids":runningTask['LED_id'],                
                 "pgmfilepath":runningTask['pgmfilepath'],
                 "park_id":runningTask['park_id'],
-                #"backgroundImage":runningTask['backgroundImage'],
+                "backgroundImage":runningTask['backgroundImage'],
                 "empty_plot":empty_plot,
             }
         
@@ -71,15 +71,16 @@ class LedTaskThread(threading.Thread):
 
                     # 从文件名读出key
                     if key  in  self.runningTaskDict:
-                        if self.runningTaskDict[key]['last_modified'] == task_data['last_modified']:
-                            continue
+                        #if self.runningTaskDict[key]['last_modified'] == task_data['last_modified']:
+                        #    continue
                         if self.runningTaskDict[key]['md5_hash'] == md5_hash:
+                            
                             continue
 
                         self.runningTaskDict.pop(key)
 
                 
-                    
+                    self.logger.debug(f"load task {file_path}")
                     task_data = json.loads(data)
                     task_data['md5_hash'] = md5_hash
                     task_data['loop']=0
