@@ -24,6 +24,8 @@ def create_park():
         data = request.get_json()
     except:
         data = request.values
+        print(data)
+        app.logger.error(f"create parkk   {data}")
         file = request.files['file']
         if not file:
             return "no file"
