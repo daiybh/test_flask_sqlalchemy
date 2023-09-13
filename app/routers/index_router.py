@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request  ,render_template
 
-from app import db
+from app import db,app
+
 
 from app.models.user import User
 from app.models.led import Led
@@ -32,9 +33,30 @@ def product():
     return render_template('product.html',data=msg)
 
 
+@index_router.route('/insertData', methods=['GET'])
+def insertData():
+    try:
+        data = request.get_json()
+    except :
+        print("don't have Json use values")
+        data = request.values
+        print(data)
+        app.logger.error(f"insertData   {data}")
+
+    park = Park(name="test"
+                , park_id="10045928"
+                , pgmfilepath="./upload/10045928.lsprj")
+    db.session.add(park)
+
+    led = Led(ledid="860402316010496", park_id="10045928")
+    db.session.add(led)
+    
+    db.session.commit()
+    return "success"
 
 @index_router.route("/createdb", methods=["GET"])
 def createdb():
     db.create_all()
+    
     return "Database created"
 
