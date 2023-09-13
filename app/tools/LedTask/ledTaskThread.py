@@ -24,6 +24,7 @@ class LedTaskThread(threading.Thread):
         self.logger.debug("TimerThread init")
 
     def activeTask(self,task):
+        self.logger.debug(f"activeTask:{task}")
         self.taskQueue.put(task)
 
     def handle(self,runningTask):        
@@ -31,7 +32,7 @@ class LedTaskThread(threading.Thread):
 
         curPage = runningTask['loop'] %pages
 
-        print(f"curpos:{curPage}/{pages} loop:{runningTask['loop']}")
+        #print(f"curpos:{curPage}/{pages} loop:{runningTask['loop']}")
         runningTask['loop']+=1
 
         curGroupTask = runningTask['groupTask'][curPage]
@@ -48,8 +49,8 @@ class LedTaskThread(threading.Thread):
         
         response = requests.get(self.config['LED_SERVER_UPDATE_EMPTY_PLOT'],params=dat)
         last_update_response = response.text  
-        self.logger.debug(f"last_update_response:{last_update_response}") 
-        print(last_update_response)     
+        #self.logger.debug(f"last_update_response:{last_update_response}") 
+        #print(last_update_response)     
 
     def loadTask(self):
         print("loadTask....")
