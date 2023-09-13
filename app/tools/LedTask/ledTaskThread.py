@@ -115,7 +115,10 @@ class LedTaskThread(threading.Thread):
                 #print("runningTaskDict is empty")
                 continue
             for k,rtask in self.runningTaskDict.items():
-                self.handle(rtask)
+                try:
+                    self.handle(rtask)
+                except Exception as e:
+                    self.logger.error(f"handle error {e}")
             
 
     
