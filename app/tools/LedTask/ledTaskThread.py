@@ -42,7 +42,7 @@ class LedTaskThread(threading.Thread):
                 "ledids":runningTask['LED_id'],                
                 "pgmfilepath":runningTask['pgmfilepath'],
                 "park_id":runningTask['park_id'],
-                "backgroundImage":runningTask['backgroundImage'],
+                #"backgroundImage":runningTask['backgroundImage'],
                 "empty_plot":empty_plot,
             }
         
