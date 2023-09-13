@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.models.led import Led
-from app import db
+from app import db,app
 
 led_router = Blueprint('led_router', __name__)
 
@@ -23,6 +23,7 @@ def create_led():
         data = request.get_json()
     except:
         data = request.values
+    app.logger.error(f"insertData   {data}")
     led = Led(ledid=data['ledid'], park_id=data['park_id'])
     db.session.add(led)
     db.session.commit()

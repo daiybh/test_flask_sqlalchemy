@@ -24,11 +24,14 @@ def create_park():
         data = request.get_json()
     except:
         data = request.values
+        print(data)
+        app.logger.error(f"create parkk   {data}")
         file = request.files['file']
         if not file:
             return "no file"
         lsprjfile = os.path.join(app.config['UPLOAD_FOLDER'],
                                  f'{data["park_id"]}.lsprj')
+        app.logger.warning("create_park lsprjfile:{}".format(lsprjfile))
         file.save(lsprjfile)
 
     park = Park(name=data['park_name']
