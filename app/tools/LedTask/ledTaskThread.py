@@ -106,7 +106,7 @@ class LedTaskThread(threading.Thread):
                 for i in range(len(gt),4):
                     temp= {
                     "F_id":7,
-                    "F_message":"",
+                    "F_message":"  ",
                     "F_color":0xff,
                     "F_size":14
                     }
