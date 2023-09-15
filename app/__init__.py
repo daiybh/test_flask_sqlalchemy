@@ -1,6 +1,7 @@
 import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from logging.handlers import TimedRotatingFileHandler
 
 from app.globalDebugVer import GlobalVar
 from app.tools.LedTask.ledTaskThread import LedTaskThread
@@ -10,6 +11,7 @@ from flask_restful import Api,Resource
 
 import os
  
+
 
 
 app = Flask(__name__)
@@ -33,8 +35,18 @@ def init(curAppPath):
     if not os.path.exists(app.config["LOGGER_PATH"]):
         os.makedirs(app.config["LOGGER_PATH"]) 
 
-    logging.basicConfig(filename=f'{app.config["LOGGER_PATH"]}flask.log',
-                        level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+        
+
+    formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+    handler = TimedRotatingFileHandler(f'{app.config["LOGGER_PATH"]}flask.log', 
+                            when='midnight', backupCount=7)
+    handler.setLevel(logging.DEBUG)
+    handler.setFormatter(formatter)
+    
+
+    app.logger.addHandler(handler)
+    app.logger.addHandler(logging.StreamHandler())
 
     app.globalVar=GlobalVar()
     if app.globalVar.ledTaskThread==None:
