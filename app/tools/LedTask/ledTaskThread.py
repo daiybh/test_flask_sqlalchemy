@@ -4,11 +4,12 @@ import  threading
 import logging
 
 import requests
-
+from app import db
 from app.config import Config
 import time
 import os
 import json
+from app.models.led import Led
 
 from app.tools.LedTask.lsprj_parser import convert_file_to_json
 
@@ -60,6 +61,11 @@ class LedTaskThread(threading.Thread):
         #print(last_update_response)     
     def loadATask(self,file_path,file_name):
         key = file_name.split('.')[0]
+        park_id = key.split('_')[0]
+        led_id = key.spit('_')[1]
+        result = db.session.query(Led.ledid,Led.park_id).filter(Led.ledid==led_id).filter(Led.park_id==park_id).all() 
+        if len(result)<1:
+            return
         with open(file_path, 'r') as file:        
             data = file.read()
             md5_hash = hashlib.md5(data.encode()).hexdigest()
