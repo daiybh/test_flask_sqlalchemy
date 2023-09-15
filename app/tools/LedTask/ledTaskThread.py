@@ -52,7 +52,7 @@ class LedTaskThread(threading.Thread):
                 "data":runningTask['groupTask'][curPage]
             }
         
-        
+        print("dat:",dat['LED_id'])
         response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)
         last_update_response = response.json()  
         #self.logger.debug(f"last_update_response:{last_update_response}") 
@@ -150,7 +150,7 @@ class LedTaskThread(threading.Thread):
                 try:
                     self.handle(rtask)
                 except Exception as e:
-                    self.logger.error(f"handle error {e}")
+                    self.logger.error(f"handle error [{k}] {e}")
             
 
     
