@@ -8,7 +8,6 @@ from app.config import Config
 import time
 import os
 import json
-from app.models.led import Led
 
 from app.tools.LedTask.lsprj_parser import convert_file_to_json
 
