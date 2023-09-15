@@ -42,17 +42,24 @@ def init(curAppPath):
 
     formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-    handler = TimedRotatingFileHandler(f'{app.config["LOGGER_PATH"]}Rotatingflask.log', 
+    rfhandler = TimedRotatingFileHandler(f'{app.config["LOGGER_PATH"]}Rotatingflask.log', 
                             when='midnight', backupCount=7)
-    handler.setLevel(logging.DEBUG)
-    handler.setFormatter(formatter)
+    rfhandler.setLevel(logging.DEBUG)
+    rfhandler.setFormatter(formatter)
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
     
 
-    app.logger.addHandler(handler)
+    logger = logging.getLogger("Tlog")
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(rfhandler)
+    logger.addHandler(ch)
 
     app.globalVar=GlobalVar()
     if app.globalVar.ledTaskThread==None:
-        app.globalVar.ledTaskThread = LedTaskThread(app.logger,app.config)
+        app.globalVar.ledTaskThread = LedTaskThread(app.config)
         app.globalVar.ledTaskThread.start()
 
 # Import models

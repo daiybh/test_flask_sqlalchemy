@@ -16,10 +16,10 @@ from app.tools.LedTask.lsprj_parser import convert_file_to_json
 # 定时从任务队列里面取出任务 并执行
 # 任务里面包含一个 子任务队列，并记录当前执行到哪个子任务
 class LedTaskThread(threading.Thread):
-    def __init__(self,logger,config,activetask_everyseconds=20):
+    def __init__(self,config,activetask_everyseconds=20):
         threading.Thread.__init__(self)
         self.taskQueue = Queue(maxsize=5)    
-        self.logger=logger  
+        self.logger=logging.getLogger("Tlog")  
         self.config=config
         self.activetask_everyseconds= activetask_everyseconds
         self.logger.debug("TimerThread init")
