@@ -46,7 +46,6 @@ def init(curAppPath):
     
 
     app.logger.addHandler(handler)
-    app.logger.addHandler(logging.StreamHandler())
 
     app.globalVar=GlobalVar()
     if app.globalVar.ledTaskThread==None:
