@@ -60,6 +60,7 @@ class LedTaskThread(threading.Thread):
         except Exception as e:
             print("the response is not json")
             print(e)
+            print(response.text)
 
         #self.logger.debug(f"last_update_response:{last_update_response}") 
         #print(last_update_response)     
