@@ -144,7 +144,7 @@ class LedTaskThread(threading.Thread):
                 self.loadTask()                
             except Exception as e:
                 pass
-            #print(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }" )
+            print(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }   {len(self.runningTaskDict)}" )
             if len(self.runningTaskDict)==0:
                 #print("runningTaskDict is empty")
                 continue
