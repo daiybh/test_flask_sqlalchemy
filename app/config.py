@@ -13,6 +13,7 @@ class Config:
     LED_SERVER_BASEURL = "http://t.hyman.store:11007"
     LED_SERVER_NEIMA_URL = LED_SERVER_BASEURL+"/neima?key="
     LED_SERVER_UPDATE_EMPTY_PLOT = LED_SERVER_BASEURL+"/empty_plot"
+    LED_SERVER_UPDATE_CONTENT = LED_SERVER_BASEURL+"/updatecontent"
 
     UPLOAD_FOLDER = f'{curAppPath}/upload/'
 

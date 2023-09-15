@@ -10,6 +10,8 @@ import time
 import os
 import json
 
+from app.tools.LedTask.lsprj_parser import convert_file_to_json
+
 
 #启动一个定时线程
 # 定时从任务队列里面取出任务 并执行
@@ -36,21 +38,75 @@ class LedTaskThread(threading.Thread):
         runningTask['loop']+=1
 
         curGroupTask = runningTask['groupTask'][curPage]
-        empty_plot = ",".join ([l['F_message'] for l in curGroupTask])
+
+        for task in curGroupTask:
+            if 'F_size' not in task:
+                task['F_size']=15
 
         #生成请求JSON
         dat={
-                "ledids":runningTask['LED_id'],                
+                "LED_id":runningTask['LED_id'],                
                 "pgmfilepath":runningTask['pgmfilepath'],
                 "park_id":runningTask['park_id'],
-                "backgroundImage":runningTask['backgroundImage'],
-                "empty_plot":empty_plot,
+                "background":runningTask['backgroundImage']            ,
+                "led_info":runningTask['led_info'],
+                "data":runningTask['groupTask'][curPage]
             }
         
-        response = requests.get(self.config['LED_SERVER_UPDATE_EMPTY_PLOT'],params=dat)
-        last_update_response = response.text  
+        
+        response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)
+        last_update_response = response.json()  
         #self.logger.debug(f"last_update_response:{last_update_response}") 
         #print(last_update_response)     
+    def loadATask(self,file_path,file_name):
+        key = file_name.split('.')[0]
+        with open(file_path, 'r') as file:        
+            data = file.read()
+            md5_hash = hashlib.md5(data.encode()).hexdigest()
+
+            # 从文件名读出key
+            if key  in  self.runningTaskDict:
+                #if self.runningTaskDict[key]['last_modified'] == task_data['last_modified']:
+                #    continue
+                if self.runningTaskDict[key]['md5_hash'] == md5_hash:                    
+                    return
+                self.runningTaskDict.pop(key)
+
+            self.logger.debug(f"load task {file_path}")
+            task_data = json.loads(data)
+            task_data['md5_hash'] = md5_hash
+            task_data['loop']=0
+            #生成背景图片
+            #                     
+            task_data['backgroundImage']=self.config["BACKGROUND_IMG_PATH"]
+            lsprjJson = convert_file_to_json(task_data['pgmfilepath'])
+            
+            ledJson= lsprjJson["LEDS"]["LED"]
+
+            task_data["led_info"]={
+                        "LedType":int(ledJson['@LedType'])+1,
+                        "LedWidth":int(ledJson['@LedWidth']),
+                        "LedHeight":int(ledJson['@LedHeight']),
+                        "LedColor":int(ledJson['@LedColor'])+1,
+                        "LedGray":int(ledJson['@LedGray'])+1
+                    }
+
+            groupTask=[]
+            for i in range(0,len(task_data['data']),4):
+                gt =task_data['data'][i:i+4]
+                for i in range(len(gt),4):
+                    temp= {
+                    "F_id":7,
+                    "F_message":"",
+                    "F_color":0xff,
+                    "F_size":14
+                    }
+                    gt.append(temp)
+                groupTask.append(gt )
+            task_data['groupTask'] = groupTask
+
+            self.runningTaskDict[key] = task_data
+
 
     def loadTask(self):
         print("loadTask....")
@@ -62,40 +118,11 @@ class LedTaskThread(threading.Thread):
             if file_name.startswith('task@') and file_name.endswith('.json'):
                 file_path = os.path.join(task_folder, file_name)
                 #task_data['last_modified'] = time.ctime(os.path.getmtime(file_path))
+                try:
+                    self.loadATask(file_path,file_name)
+                except Exception as e:
+                    self.logger.error(f"loadATask error {e}")
                 
-                key = file_name.split('.')[0]
-                with open(file_path, 'r') as file:
-                
-                    data = file.read()
-
-                    md5_hash = hashlib.md5(data.encode()).hexdigest()
-
-                    # 从文件名读出key
-                    if key  in  self.runningTaskDict:
-                        #if self.runningTaskDict[key]['last_modified'] == task_data['last_modified']:
-                        #    continue
-                        if self.runningTaskDict[key]['md5_hash'] == md5_hash:
-                            
-                            continue
-
-                        self.runningTaskDict.pop(key)
-
-                
-                    self.logger.debug(f"load task {file_path}")
-                    task_data = json.loads(data)
-                    task_data['md5_hash'] = md5_hash
-                    task_data['loop']=0
-                    #生成背景图片
-                    #                     
-                    task_data['backgroundImage']=self.config["BACKGROUND_IMG_PATH"]
-                    #generate_backImage(task_data['pgmfilepath'],f'{self.config["UPLOAD_FOLDER"]}/backgournd_{key}.jpg')
-                    # 把task_data['data'] 分解成 group task 每个group 4个task
-                    groupTask=[]
-                    for i in range(0,len(task_data['data']),4):
-                        groupTask.append( task_data['data'][i:i+4])
-                    task_data['groupTask'] = groupTask
-
-                    self.runningTaskDict[key] = task_data
                     
                     
 
