@@ -49,12 +49,18 @@ class LedTaskThread(threading.Thread):
                 "park_id":runningTask['park_id'],
                 "background":runningTask['backgroundImage']            ,
                 "led_info":runningTask['led_info'],
-                "data":runningTask['groupTask'][curPage]
+                "data":curGroupTask
             }
         
-        print("dat:",dat['LED_id'])
-        response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)
-        last_update_response = response.json()  
+        print("dat:",dat['LED_id'],curGroupTask)
+        try:
+            response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)
+        
+            last_update_response = response.json()
+        except Exception as e:
+            print("the response is not json")
+            print(e)
+
         #self.logger.debug(f"last_update_response:{last_update_response}") 
         #print(last_update_response)     
     def loadATask(self,file_path,file_name):
