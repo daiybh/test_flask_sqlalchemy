@@ -9,6 +9,18 @@ from app import db,app
   
 
 api_updateLed_router = Blueprint('api_updateLed_router', __name__,url_prefix='/api')
+
+@api_updateLed_router.route('/', methods=['GET','POST'])
+def api_index():    
+    a = app.globalVar.ledTaskThread.getRunningTask()
+    return json.dumps(a,indent=4,ensure_ascii=False)
+
+
+@api_updateLed_router.route('/', methods=['GET','POST'])
+def api_curruningTask():
+    a = app.globalVar.ledTaskThread.getRunningTask()
+    return json.dumps(a,indent=4,ensure_ascii=False)
+
 @api_updateLed_router.route('/updates', methods=['GET','POST'])
 def get_users():    
     json_template={
@@ -70,8 +82,8 @@ def get_users():
     #   直接把json 写入 TASK_FOLDER
     # 激活letaskThread  读一次 TASK_FOLDER
     taskJson=app.config["TASK_FOLDER"]+f"task@{park_id}_{led_id}.json"
-    with open(taskJson,"w") as f:
-        json.dump(rjson,f,indent=4)
+    with open(taskJson,"w",encoding="utf-8") as f:
+        json.dump(rjson,f,indent=4,ensure_ascii=False)
 
     #letaskThread 
     # 启动的时候 读一次 TASK_FOLDER

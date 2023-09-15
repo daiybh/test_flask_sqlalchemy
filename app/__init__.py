@@ -1,5 +1,5 @@
 import logging
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from logging.handlers import TimedRotatingFileHandler
 
@@ -16,6 +16,7 @@ import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.config["JSON_AS_ASCII"] = False
 
 db = SQLAlchemy(app)
 
@@ -82,6 +83,12 @@ app.register_blueprint(park_router)
 app.register_blueprint(api_updateLed_router)
 
 @app.route('/', methods=['GET'])
+def show_allRoutes():
+    
+    return render_template('all_routers.html',sorted_rules=app.url_map.iter_rules())
+
+
+
 @app.route('/l', methods=['GET'])
 @app.route('/list', methods=['GET'])
 def index():

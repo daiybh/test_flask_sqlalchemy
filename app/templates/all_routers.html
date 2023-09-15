@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
+        <h1>Home</h1>
+        <p> </p>
+        <table>
+        {% for rule in sorted_rules %}
+        <tr>
+            <td>{{ ', '.join(rule.methods) }}</td>
+            <td><a target="_blank" href={{ rule.rule }}>{{ rule.rule }}</a>                </td>
+            
+    
+        </tr>
+        {% endfor %}
+    </table>
+    <p>------------------------ </p>
+
+        {{sorted_rules}}
+    </body>
+</html>

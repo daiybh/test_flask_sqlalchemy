@@ -45,10 +45,18 @@
 
 </script>
 <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css">
-
+<style>
+    
+section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-end;
+}
+</style>
 <body>
     <section>
-        <section>
+        <section width="10%">
             <div>
                 <h1>ADD LEDs </h1>
                 <form onsubmit="return setLedAction(this)" method="POST">
@@ -59,7 +67,7 @@
                 </form>
             </div>
         </section>
-        <section>
+        <section width="10%">
             <div>
                 <h1>update LEDs </h1>
                 <form onsubmit="return setLedAction(this)" method="POST">
@@ -70,10 +78,7 @@
                 </form>
             </div>
         </section>
-        <section>
-            <div>" "</div>
-        </section>
-        <section>
+        <section  width="10%">
             <div>
                 <h1>ADD Parks </h1>
                 <form enctype="multipart/form-data" onsubmit="return setparkAction(this)" method="POST">
@@ -85,7 +90,7 @@
                 </form>
             </div>
         </section>
-        <section>
+        <section  width="10%">
             <div>
                 <h1>update pgmfile </h1>
                 <form enctype="multipart/form-data" onsubmit="return setparkAction(this)" method="POST">

@@ -62,6 +62,9 @@ class LedTaskThread(threading.Thread):
             print(e)
             print(response.text)
 
+    def getRunningTask(self):
+        return self.runningTaskDict
+    
         #self.logger.debug(f"last_update_response:{last_update_response}") 
         #print(last_update_response)     
     def loadATask(self,file_path,file_name):
@@ -69,7 +72,7 @@ class LedTaskThread(threading.Thread):
         #result = db.session.query(Led.ledid,Led.park_id).filter(Led.ledid==led_id).filter(Led.park_id==park_id).all() 
         #if len(result)<1:
         #    return
-        with open(file_path, 'r') as file:        
+        with open(file_path, 'r',encoding='utf-8') as file:        
             data = file.read()
             md5_hash = hashlib.md5(data.encode()).hexdigest()
 
