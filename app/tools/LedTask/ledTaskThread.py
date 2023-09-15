@@ -59,8 +59,6 @@ class LedTaskThread(threading.Thread):
         #print(last_update_response)     
     def loadATask(self,file_path,file_name):
         key = file_name.split('.')[0]
-        park_id = key.split('_')[0]
-        led_id = key.spit('_')[1]
         #result = db.session.query(Led.ledid,Led.park_id).filter(Led.ledid==led_id).filter(Led.park_id==park_id).all() 
         #if len(result)<1:
         #    return
