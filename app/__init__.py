@@ -36,10 +36,13 @@ def init(curAppPath):
         os.makedirs(app.config["LOGGER_PATH"]) 
 
         
+    logging.basicConfig(filename=f'{app.config["LOGGER_PATH"]}flask.log',
+                        level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
 
     formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-    handler = TimedRotatingFileHandler(f'{app.config["LOGGER_PATH"]}flask.log', 
+    handler = TimedRotatingFileHandler(f'{app.config["LOGGER_PATH"]}Rotatingflask.log', 
                             when='midnight', backupCount=7)
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)
