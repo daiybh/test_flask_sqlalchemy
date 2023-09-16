@@ -63,6 +63,8 @@ class LedTaskThread(threading.Thread):
             last_update_response = response.text
         
         runningTask['last_update_response'] = last_update_response
+        from datetime import datetime
+        runningTask['last_update_time']=datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
     def getRunningTask(self):
         return self.runningTaskDict

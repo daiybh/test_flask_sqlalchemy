@@ -11,12 +11,17 @@ from flask_restful import Api,Resource
 
 import os
  
-
+import json
+def to_pretty_json(value):
+    return json.dumps(value, sort_keys=True,
+                      indent=4, separators=(',', ': '), ensure_ascii=False)
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config["JSON_AS_ASCII"] = False
+
+app.jinja_env.filters['to_pretty_json'] = to_pretty_json
 
 db = SQLAlchemy(app)
 

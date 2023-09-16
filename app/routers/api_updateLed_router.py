@@ -1,6 +1,6 @@
 import json
 from queue import Queue
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, render_template, request
 from app.models.user import User
 from app.models.park import Park
 from app.models.led import Led
@@ -12,8 +12,8 @@ api_updateLed_router = Blueprint('api_updateLed_router', __name__,url_prefix='/a
 
 @api_updateLed_router.route('/', methods=['GET','POST'])
 def api_index():    
-    a = app.globalVar.ledTaskThread.getRunningTask()
-    return json.dumps(a,indent=4,ensure_ascii=False)
+    a= app.globalVar.ledTaskThread.getRunningTask()
+    return render_template('api_curtask.html',data=a)
 
 
 @api_updateLed_router.route('/curtask', methods=['GET','POST'])

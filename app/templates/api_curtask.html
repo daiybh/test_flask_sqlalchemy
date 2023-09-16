@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <title>curtask</title>
+</head>
+
+<body>
+    <h1>curtask</h1>
+    <p> </p>
+    <table border="1">
+        {% for task in data %}
+        <tr>
+            <th>{{ task }}</th>
+            </tr>
+            <tr>
+            <td>
+                <table border="1">
+                    {% for key, value in data[task].items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+
+                {{  data[task] }}
+            </td>
+
+
+
+        </tr>
+        {% endfor %}
+    </table>
+    <p>------------------------ </p>
+
+        <pre>
+            
+        {{ data |to_pretty_json|safe}}
+        </pre>
+    
+</body>
+
+</html>
