@@ -68,6 +68,9 @@ def init(curAppPath):
         app.globalVar.ledTaskThread = LedTaskThread(app.config)
         app.globalVar.ledTaskThread.start()
 
+def stopAll():
+    app.globalVar.ledTaskThread.stopTask()
+
 # Import models
 from .models.user import User
 from .models.led import Led

@@ -27,7 +27,9 @@ class LedTaskThread(threading.Thread):
     def activeTask(self,task):
         self.logger.debug(f"activeTask:{task}")
         self.taskQueue.put(task)
-
+    def stopTask(self):
+        self.taskQueue.put(None)
+        
     def handle(self,runningTask):        
         pages=len(runningTask['groupTask'])
 
