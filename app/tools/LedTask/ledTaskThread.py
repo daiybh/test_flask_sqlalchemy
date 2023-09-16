@@ -60,7 +60,7 @@ class LedTaskThread(threading.Thread):
             print("the response is not json")
             print(e)
             print(response.text)
-            last_update_response = response.txt
+            last_update_response = response.text
         
         runningTask['last_update_response'] = last_update_response
 
