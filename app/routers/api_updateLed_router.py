@@ -16,7 +16,7 @@ def api_index():
     return json.dumps(a,indent=4,ensure_ascii=False)
 
 
-@api_updateLed_router.route('/', methods=['GET','POST'])
+@api_updateLed_router.route('/curtask', methods=['GET','POST'])
 def api_curruningTask():
     a = app.globalVar.ledTaskThread.getRunningTask()
     return json.dumps(a,indent=4,ensure_ascii=False)

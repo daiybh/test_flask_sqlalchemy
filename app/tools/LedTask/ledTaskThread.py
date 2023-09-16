@@ -54,13 +54,15 @@ class LedTaskThread(threading.Thread):
         
         print("dat:",dat['LED_id'],curGroupTask)
         try:
-            response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)
-        
+            response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)        
             last_update_response = response.json()
         except Exception as e:
             print("the response is not json")
             print(e)
             print(response.text)
+            last_update_response = response.txt
+        
+        runningTask['last_update_response'] = last_update_response
 
     def getRunningTask(self):
         return self.runningTaskDict
