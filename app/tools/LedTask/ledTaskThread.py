@@ -58,6 +58,9 @@ class LedTaskThread(threading.Thread):
         try:
             response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)        
             last_update_response = response.json()
+            if last_update_response['ret']!=0:               
+                self.logger.error(f"{dat['LED_id']} update error  {last_update_response}")
+                
         except Exception as e:
             print("the response is not json")
             print(e)
@@ -147,18 +150,20 @@ class LedTaskThread(threading.Thread):
     def run(self):
         self.runningTaskDict ={}
         t= threading.current_thread()
-        self.loopCount=0
+        self.loopCount=-1
         while True:
             self.loopCount+=1
             try:
-                if self.loopCount!=1:
+                if self.loopCount!=0:
                     newtask = self.taskQueue.get(block=True,timeout= self.activetask_everyseconds)
                     if newtask==None:
                         break
                 self.loadTask()                
             except Exception as e:
                 pass
-            self.logger.debug(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }   {len(self.runningTaskDict)}" )
+            if self.loopCount%1000==0:
+                self.logger.debug(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }   {len(self.runningTaskDict)}" )
+                
             if len(self.runningTaskDict)==0:
                 #print("runningTaskDict is empty")
                 continue
