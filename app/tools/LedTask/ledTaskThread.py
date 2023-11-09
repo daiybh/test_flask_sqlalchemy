@@ -62,7 +62,7 @@ class LedTaskThread(threading.Thread):
                 "data":curGroupTask
             }
         
-        self.logger.debug("dat:",dat['LED_id'],curGroupTask)
+        self.logger.debug(f"dat:{dat['LED_id']},{curGroupTask}")
         bSucessed=False
         try:
             response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)        
