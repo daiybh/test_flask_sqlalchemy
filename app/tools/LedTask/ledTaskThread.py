@@ -30,7 +30,9 @@ class LedTaskThread(threading.Thread):
     def stopTask(self):
         self.taskQueue.put(None)
         
-    def handle(self,runningTask):        
+    def handle(self,runningTask):    
+
+
         pages=len(runningTask['groupTask'])
 
         curPage = runningTask['loop'] %pages
@@ -38,6 +40,11 @@ class LedTaskThread(threading.Thread):
         #print(f"curpos:{curPage}/{pages} loop:{runningTask['loop']}")
         runningTask['loop']+=1
 
+        if runningTask['Continue_error_count']>10:            
+            
+            if runningTask['loop'] %10!=0:
+                self.logger.error(f"{runningTask['LED_id']} continue_error_count {runningTask['Continue_error_count']} >10  ignore")
+                return
         curGroupTask = runningTask['groupTask'][curPage]
 
         for task in curGroupTask:
@@ -55,18 +62,24 @@ class LedTaskThread(threading.Thread):
             }
         
         print("dat:",dat['LED_id'],curGroupTask)
+        bSucessed=False
         try:
             response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)        
             last_update_response = response.json()
             if last_update_response['ret']!=0:               
                 self.logger.error(f"{dat['LED_id']} update error  {last_update_response}")
+            else:
+                bSucessed=True
                 
         except Exception as e:
-            print("the response is not json")
-            print(e)
-            print(response.text)
+            self.logger.error(f"{dat['LED_id']} update Exception  {e}")
+            self.logger.error(response.text)
             last_update_response = response.text
-        
+        if bSucessed==False:
+            runningTask['Continue_error_count']+=1
+        else:
+            runningTask['Continue_error_count']=0
+
         runningTask['last_update_response'] = last_update_response
         from datetime import datetime
         runningTask['last_update_time']=datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
@@ -97,6 +110,7 @@ class LedTaskThread(threading.Thread):
             task_data = json.loads(data)
             task_data['md5_hash'] = md5_hash
             task_data['loop']=0
+            task_data['Continue_error_count']=0
             #生成背景图片
             #                     
             task_data['backgroundImage']=self.config["BACKGROUND_IMG_PATH"]
@@ -167,6 +181,9 @@ class LedTaskThread(threading.Thread):
             if len(self.runningTaskDict)==0:
                 #print("runningTaskDict is empty")
                 continue
+            print("#"*20)
+            print(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }   {len(self.runningTaskDict)}" )
+
             for k,rtask in self.runningTaskDict.items():
                 try:
                     self.handle(rtask)
