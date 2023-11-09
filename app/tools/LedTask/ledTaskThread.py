@@ -30,7 +30,8 @@ class LedTaskThread(threading.Thread):
     def stopTask(self):
         self.taskQueue.put(None)
         
-    def handle(self,runningTask):    
+    def handle(self,runningTask):
+        self.logger.debug(f"begin..{runningTask['LED_id']}")    
 
 
         pages=len(runningTask['groupTask'])
@@ -183,8 +184,6 @@ class LedTaskThread(threading.Thread):
                 #print("runningTaskDict is empty")
                 continue
             
-            self.logger.debug(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }   {len(self.runningTaskDict)}" )
-
             for k,rtask in self.runningTaskDict.items():
                 try:
                     self.handle(rtask)
