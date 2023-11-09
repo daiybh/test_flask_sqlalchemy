@@ -61,7 +61,7 @@ class LedTaskThread(threading.Thread):
                 "data":curGroupTask
             }
         
-        print("dat:",dat['LED_id'],curGroupTask)
+        self.logger.debug("dat:",dat['LED_id'],curGroupTask)
         bSucessed=False
         try:
             response = requests.post(self.config['LED_SERVER_UPDATE_CONTENT'],json=dat)        
@@ -167,6 +167,7 @@ class LedTaskThread(threading.Thread):
         self.loopCount=-1
         while True:
             self.loopCount+=1
+            self.logger.debug(f"============={self.loopCount}==============")
             try:
                 if self.loopCount!=0:
                     newtask = self.taskQueue.get(block=True,timeout= self.activetask_everyseconds)
@@ -181,8 +182,8 @@ class LedTaskThread(threading.Thread):
             if len(self.runningTaskDict)==0:
                 #print("runningTaskDict is empty")
                 continue
-            print("#"*20)
-            print(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }   {len(self.runningTaskDict)}" )
+            
+            self.logger.debug(f"{t.ident}>>I am liveing... {time.asctime(time.localtime() ) }   {len(self.runningTaskDict)}" )
 
             for k,rtask in self.runningTaskDict.items():
                 try:
